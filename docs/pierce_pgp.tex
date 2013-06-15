@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{bm}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\title{Pierce's pattern generation procedure\thanks{Excerpt from Pierce~J.~F. 
+Some large-scale production scheduling problems in the paper industry. 
+--- Englewood Cliffs : Prentice-Hall, 1964. --- 255 p.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+Suppose that a mill has recieved customers' orders for $r_1, r_2, \ldots, r_n$
+rolls of a certain grade of paper, these rolls to be of widths
+$w_1, w_2, \ldots, w_n$ and (the same) diameter $D$. The mill has one paper 
+machine which can manufacture the desired grade, this machine producing rolls
+of width $L$ (where $L \geq w_i$ for all $i$). Since customer widths demanded 
+are smaller than, or equal to, the production width of the paper machine, the
+production scheduler tries to find combinations of customers' 
+widths\footnote{To identify such combinations Pierce extensively used the term 
+``process''. Today it is more common to use term ``pattern'' instead.} with 
+which to fill out the width $L$ of the paper machine rolls. Usually there will 
+be a ``side roll'' of trim loss left over from such combinations which is 
+repocessed or disposed of in some other manner. The paper trim problem, then, 
+is to find trimming combinations of customer widths and to determine the number 
+of machine rolls to be produced and cut according to each combination~--- so as 
+to satisfy the customers' demand most efficiently \cite[p.~13]{bib:pierce64}.
+
+[...] A \textit{dominating process} is defined to be one for which
+\begin{equation}\label{eq:dominating_pattern}
+ d_k=\left( L - \sum_{i}a_{ik}w_i\right)<\min_{i}(w_i) 
+\end{equation}
+
+where [...] $d_k$ is the trim loss for process $k$. Any process not 
+satisfying \eqref{eq:dominating_pattern} is then dominated in the sense that
+there exists at least one other process for the same paper machine which will
+supply at least one more customer roll of some width (and the same number of 
+all other widths), for each machine roll manufactured. [...] The matrix of all
+possible processes for a problem will be termed the \textit{exhaustive process}
+matrix, $\bm{A_E}$; the matrix containing  only the dominating processes will
+be called the \textit{dominating} matrix $\bm{A_D}$ \cite[p.~18]{bib:pierce64}.
+
+[...] generation procedure is as follows, where customer widths
+ $w_1$, $w_2$, $\ldots$, $w_n$ are arranged in descending order:
+\begin{algorithm}[ht]
+    \algrenewcommand{\alglinenumber}[1]{\bfseries Step {#1}.}
+    \renewcommand{\Statex}{\item[\hphantom{\bfseries Step \arabic{ALG@line}.}]}
+    \begin{algorithmic}[1]
+    \smallskip
+    \State Set \(a_1=\min{\left( \left\lfloor \frac{L}{w_1} \right\rfloor, r_1 \right)},
+    a_2=\min{\left( \left\lfloor\frac{L-a_1w_1}{w_2}\right\rfloor, r_2 \right)}, 
+    \ldots,\) 
+    \Statex $a_n=\min{\left( \left\lfloor\frac{L-\sum\nolimits_{i=1}^{n-1}{a_iw_i}}{w_n}\right\rfloor, r_n \right)}$ 
+    \Statex where $\lfloor g \rfloor$ is the largest integer contained in $g$.
+
+    \smallskip
+    \State Record process in matrix $\bm{A_D}$.
+    
+    \smallskip
+    \State If there is an $i$, $1\leq i \leq n-1$, such that $a_i>0$ then let $j$ be 
+    \Statex the largest such $i$, and go to \textbf{Step 4}.
+    \Statex If there is no such $i$, then terminate procedure: all dominating
+    \Statex processes have been enumerated and recorded.
+    
+    \smallskip
+    \State Set $a'_1=a_1, a'_2=a_2, \ldots, a'_j=a_j-1$;
+    \Statex $a'_{j+1}=\min{\left( \left\lfloor\frac{L-\sum\nolimits_{i=1}^{j}{a_i^{\prime}w_i}}{w_{j+1}}\right\rfloor, r_{j+1} \right)}, \ldots,$ 
+    \Statex $a'_{n}=\min{\left( \left\lfloor\frac{L-\sum\nolimits_{i=1}^{n-1}{a_i^{\prime}w_i}}{w_n}\right\rfloor, r_n \right)}$ 
+    \Statex Go to \textbf{Step 2}.
+    \end{algorithmic} 
+\end{algorithm}
+
+[...] a procedure for generating the exhaustive matrix $\bm{A_E}$ is obtained 
+from this procedure merely by changing the range in step 3 from 
+$1\leq i \leq n-1$ to $1\leq i \leq n$. The resulting procedure will enumerate 
+all processes, regardless of the ordering of customer width 
+\cite[p.~44]{bib:pierce64}.
+
+\begin{thebibliography}{0}
+\bibitem{bib:pierce64} Pierce~J.~F. Some large-scale production scheduling
+problems in the paper industry. --- Englewood Cliffs : Prentice-Hall, 1964. 
+--- 255 p.
+\end{thebibliography}
+\end{document}
