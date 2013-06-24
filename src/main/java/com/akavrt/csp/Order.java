@@ -1,4 +1,4 @@
-package com.akavrt.csp.enumerator;
+package com.akavrt.csp;
 
 /**
  * <p>Order definition used in classical 1D-CSP with length and demand specified as integers.</p>
@@ -7,18 +7,18 @@ package com.akavrt.csp.enumerator;
  */
 public class Order {
     private final long length;
-    private final long quantity;
+    private final long demand;
 
-    public Order(long length, long quantity) {
+    public Order(long length, long demand) {
         this.length = length;
-        this.quantity = quantity;
+        this.demand = demand;
     }
 
     public long getLength() {
         return length;
     }
 
-    public long getQuantity() {
-        return quantity;
+    public long getDemand() {
+        return demand;
     }
 }

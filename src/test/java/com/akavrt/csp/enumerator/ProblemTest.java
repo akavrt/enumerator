@@ -1,5 +1,7 @@
 package com.akavrt.csp.enumerator;
 
+import com.akavrt.csp.Order;
+import com.akavrt.csp.Problem;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

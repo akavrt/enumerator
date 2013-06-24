@@ -1,5 +1,8 @@
 package com.akavrt.csp.enumerator;
 
+import com.akavrt.csp.Order;
+import com.akavrt.csp.Problem;
+
 /**
  * <p>Pattern enumerator based on algorithm proposed by Pierce (1964). Can be used to evaluate the
  * number of both effective and feasible patterns for a particular 1D-CSP.</p>
@@ -11,6 +14,7 @@ public class Enumerator {
     private final long[] lengths;
     private final long[] demands;
     private final long[] cuts;
+    private final long minOrderLength;
     private long effectiveCounter;
     private long feasibleCounter;
 
@@ -24,8 +28,10 @@ public class Enumerator {
         for (int i = 0; i < problem.size(); i++) {
             Order order = problem.getOrder(i);
             lengths[i] = order.getLength();
-            demands[i] = order.getQuantity();
+            demands[i] = order.getDemand();
         }
+
+        minOrderLength = lengths[lengths.length - 1];
 
         cuts = new long[problem.size()];
     }
@@ -81,7 +87,7 @@ public class Enumerator {
             if (unused < stockLength) {
                 feasibleCounter++;
 
-                if (unused < lengths[lengths.length - 1]) {
+                if (unused < minOrderLength) {
                     effectiveCounter++;
                 }
             }

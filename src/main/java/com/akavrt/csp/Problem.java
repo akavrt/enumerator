@@ -1,4 +1,4 @@
-package com.akavrt.csp.enumerator;
+package com.akavrt.csp;
 
 import java.util.ArrayList;
 import java.util.Collections;
